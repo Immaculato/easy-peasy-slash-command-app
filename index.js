@@ -96,18 +96,15 @@ controller.on('slash_command', function (slashCommand, message) {
             if (message.token !== process.env.VERIFICATION_TOKEN) return; //just ignore it.
 
             // if no text was supplied, treat it as a help command
-            if (message.text === "" || message.text === "help") {
+            if (message.text === "" || message.text === "[help]") {
                 slashCommand.replyPrivate(message,
                     "I echo back what you tell me. " +
                     "Try typing `/echo hello` to see.");
                 return;
             }
 
-            // If we made it here, just echo what the user typed back at them
-            //TODO You do it!
-            slashCommand.replyPublic(message, "1", function() {
-                slashCommand.replyPublicDelayed(message, "2").then(slashCommand.replyPublicDelayed(message, "3"));
-            });
+            //this will publicly respond in the slack channel with whatever the user sent (assuming it wasn't the word [help] or blank)
+            slashCommand.replyPublic(message, message.text);
 
             break;
         default:
